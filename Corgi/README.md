@@ -28,7 +28,7 @@ And going to `<TARGET-IP>/fog` takes us to a login page
 
 Now that we have a login page we need some credentials. before we try anything else lets try and find some default creds on google.
 
-![FOG default creds](/Images/FOG_3.png)
+![FOG default creds](Images/FOG_3.png)
 
 Lucky for us these default credentials worked and we are now logged in to the FOG dashboard
 
