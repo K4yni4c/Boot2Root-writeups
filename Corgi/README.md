@@ -5,7 +5,7 @@ Try this OSCP level practice box by JSON SEC at https://tryhackme.com/room/corgi
 The first thing we do on any pen test is a nmap scan. I went with a TCP-SYN scan with default scripts and all ports
 
 `nmap -sS -sC -p- <TARGET-IP>`
-![nmap scan pt1](:/42a9b8f9792f4d1c8b5490dc54a3f65f)
+![nmap scan pt1](:/images/nmap_1.png)
 ![nmap scan pt2](:/6d2ef1ea1b724079bc96d0ffbaf5ea91)
 
 ## NFS
