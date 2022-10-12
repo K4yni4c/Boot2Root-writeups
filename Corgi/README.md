@@ -89,7 +89,7 @@ Lets copy the contents of the files onto our host computer, then use unshadow an
 
 ![cracking the hashes](Images/cracked.png)
 
-So now we have a login, lets `su` into the new user and see what permissions they have.sudo 
+So now we have a login, lets `su` into the new user and see what permissions they have.
 
 ![checking sudo -l](Images/sudo.png)
 
