@@ -66,6 +66,7 @@ now that we have a working and stable reverse shell, we need to be able to read 
 First lets find out what binaries we have access to with `find`
 
 `find / -perm /4000 2>/dev/null`
+
 ![available binaries](Images/binaries.png)
 
 After having a search on https://gtfobins.github.io/, we found that the cupsfilter binary has a File read vulnerability, and we can use this to read the /etc/shadow and /etc/passwd files
