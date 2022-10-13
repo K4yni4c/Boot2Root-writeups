@@ -69,6 +69,8 @@ First let's find out what binaries we have access to with `find`
 
 ![available binaries](Images/binaries.png)
 
+We can see here that the account we are using can already use the sudo command. But because we dont have the password for the current user account, we need to find a way to read the /etc/shadow and /etc/passwd files so we can find either a password for the account we are using, or a password for another user.
+
 After having a search on https://gtfobins.github.io/, we found that the cupsfilter binary has a File read vulnerability, and we can use this to read the /etc/shadow and /etc/passwd files
 
 ![result on GTFObins](Images/cupsfilter.png)
