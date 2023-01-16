@@ -5,14 +5,15 @@ before you start make sure to add the following to your /etc/hosts file<br>
 ![](images/hostsfile.png)
 ## Nmap Scan
 start with checking if there are any ports open on the host<br>
+nmap -sS -sV -sC -vv stocker.htb
 ![](images/nmap.png)
 
 ports 22 (ssh) and 80 (http) are standard ports that are (usually) always open on servers so this scan didn't really give us any information, lets keep going with discovery
 ## Subdomain Enumeration
 lets try to find some hidden subdomains, we can do this by using the ffuf tool with a wordlist. <br>
+ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://FUZZ.stocker.htb
+![](images/ffuf.png)
 
-
-<br>
 This seems to have found a subdomain called dev, lets add that to the /etc/hosts file and see what is on the web page
 
 ## Login page
@@ -25,6 +26,8 @@ so that didn't work, lets check out the request in burp to see if there is any i
 ![](images/default_request.png)
 
 nothing really interesting here either. after having a look around the internet for common authentication bypasses we found this one at https://book.hacktricks.xyz/pentesting-web/nosql-injection#basic-authentication-bypass. if we use burp repeater to change the login parameters into this json code, we may be able to get past the authentication page (dont forget to change the Content-Type header to application/json)
+
+{"username": {"$ne": null}, "password": {"$ne": null} }
 ![](images/login_success.png)
 
 the request says it is redirecting us to a /stock page, lets check it out in the browser
@@ -53,6 +56,7 @@ This could potentially be a location that we can include local files.
 ## Local File Include
 
 Lets use burp repeater to change the json "title" value to an iframe to see if we can get the pdf to reflect the /etc/passwd/ file
+"title": "<iframe src=file:///etc/passwd height:750px width: 750px></iframe>"
 
 ![](images/file_inclue_1.png)
 
@@ -60,6 +64,7 @@ Awesome, we have successfully found a local file include vulnerability and found
 ![](images/wappalyzer1.png)
 
 Wappalyzer indentified that the endpoing is built on Node.js, and a file that is usually included with the node.js package is index.js, so lets try to include that file in the same way we did with the /etc/passwd file
+"title": "<iframe src=file:///var/www/dev/index.js height:750px width: 750px></iframe>"
 ![](images/file_include_2.png)
 
 we can see that one of the lines of the index.js file connects to a mongodb, and has a password shown in plaintext. lets try to ssh into the server using the credentials gained:<br><br>angoose:IHeardPassphasesArePrettySecure
@@ -74,3 +79,5 @@ since we already have a password for angoose, lets check out what sudo permissio
 looks like this account has permissions to run .js scripts as root as long as we indicate the file path /usr/local/scripts/
 
 lets define a .js script that spawns a bash shell with root permissions, and execute it using directory traversal:
+const fs = require("child_process").spawn("/usr/bin/bash",)
+![](images/system_own.png)
