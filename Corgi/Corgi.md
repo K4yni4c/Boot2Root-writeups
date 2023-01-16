@@ -1,7 +1,7 @@
 # Corgi
 Try this OSCP level practice box by JSON SEC at https://tryhackme.com/room/corgi
 
-## nmap TCP scan
+## nmap scan
 The first thing we do on any vulnerable box is a nmap scan.
 
 `nmap -sS -sC -p- <TARGET-IP>`
